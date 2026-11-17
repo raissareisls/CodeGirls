@@ -205,6 +205,13 @@ private final class CodeGirlsViewModel: ObservableObject {
 
     var savedJobs: [JobOpening] { jobs.filter { savedJobIDs.contains($0.id) } }
 
+    var hasJobFilters: Bool { !selectedLevels.isEmpty || !selectedModes.isEmpty }
+
+    func clearJobFilters() {
+        selectedLevels.removeAll()
+        selectedModes.removeAll()
+    }
+
     var scheduledMentorships: [Mentorship] {
         mentors.compactMap { item -> Mentorship? in
             guard let date = sessions[item.id] else { return nil }
@@ -783,6 +790,9 @@ private struct JobsView: View {
                 SectionTitle(title: "Modalidade")
                 ForEach(WorkMode.allCases) { mode in
                     Toggle(mode.rawValue, isOn: membership(mode, in: $model.selectedModes))
+                }
+                if model.hasJobFilters {
+                    Button("Limpar filtros") { model.clearJobFilters() }
                 }
             }
             .tint(violet)
