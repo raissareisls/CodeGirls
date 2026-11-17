@@ -233,7 +233,8 @@ private final class CodeGirlsViewModel: ObservableObject {
         forumState = .loading
         do {
             let endpoint = URL(string: "https://jsonplaceholder.typicode.com/posts")!
-            let request = URLRequest(url: endpoint, timeoutInterval: 15)
+            let policy: URLRequest.CachePolicy = force ? .reloadIgnoringLocalCacheData : .useProtocolCachePolicy
+            let request = URLRequest(url: endpoint, cachePolicy: policy, timeoutInterval: 15)
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let http = response as? HTTPURLResponse,
                   (200..<300).contains(http.statusCode) else {
@@ -682,6 +683,17 @@ private struct ForumsView: View {
             }
         }
         .searchable(text: $model.forumSearch, prompt: "Buscar tópicos")
+        .toolbar {
+            if case .success = model.forumState {
+                ToolbarItem(placement: .primaryAction) {
+                    Button {
+                        Task { await model.loadForums(force: true) }
+                    } label: {
+                        Label("Atualizar tópicos", systemImage: "arrow.clockwise")
+                    }
+                }
+            }
+        }
         .refreshable { await model.loadForums(force: true) }
     }
 }
