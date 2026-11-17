@@ -122,6 +122,7 @@ private final class CodeGirlsViewModel: ObservableObject {
     @AppStorage("codegirls.connectionCount") private var storedConnectionCount = 1
     @AppStorage("codegirls.connectedIDs") private var storedConnectedIDs = "1"
     @AppStorage("codegirls.savedJobIDs") private var storedJobIDs = "1"
+    @AppStorage("codegirls.joinedGroupIDs") private var storedGroupIDs = ""
 
     @Published private(set) var connectedIDs: Set<Int> = []
     @Published private var savedJobIDs: Set<Int> = []
@@ -163,6 +164,7 @@ private final class CodeGirlsViewModel: ObservableObject {
         connectedIDs = decodeIDs(storedConnectedIDs).intersection(people.map(\.id))
         storedConnectionCount = connectedIDs.count
         savedJobIDs = decodeIDs(storedJobIDs)
+        joinedGroupIDs = decodeIDs(storedGroupIDs).intersection(groups.map(\.id))
         if let first = mentors.first {
             sessions[first.id] = first.date
         }
@@ -263,6 +265,7 @@ private final class CodeGirlsViewModel: ObservableObject {
         } else {
             joinedGroupIDs.insert(group.id)
         }
+        storedGroupIDs = encodeIDs(joinedGroupIDs)
     }
 
     func isSaved(_ job: JobOpening) -> Bool { savedJobIDs.contains(job.id) }
