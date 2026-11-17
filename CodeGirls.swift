@@ -224,6 +224,11 @@ private final class CodeGirlsViewModel: ObservableObject {
         }.sorted { $0.date < $1.date }
     }
 
+    var nextMentorship: Mentorship? {
+        let now = Date.now
+        return scheduledMentorships.first { $0.date >= now }
+    }
+
     // Os IDs retornados pela API selecionam tópicos demonstrativos em português.
     func loadForums(force: Bool = false) async {
         if case .loading = forumState { return }
@@ -489,7 +494,7 @@ private struct HomeView: View {
 
             SectionTitle(title: "Notificações")
             Card {
-                if let next = model.scheduledMentorships.first {
+                if let next = model.nextMentorship {
                     Label("Mentoria com \(next.mentor.name)", systemImage: "calendar")
                     Text(next.date, format: .dateTime.day().month(.wide).hour().minute())
                         .font(.subheadline)
