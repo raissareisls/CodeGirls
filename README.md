@@ -11,10 +11,10 @@ Fiquei em **1º lugar na lista de espera da seleção anterior da Apple Develope
 | Aba | O que você pode fazer |
 | --- | --- |
 | Início | Editar o nome e a foto de perfil, acompanhar as estatísticas da comunidade e conferir o próximo encontro de mentoria. |
-| Fóruns | Carregar os tópicos pela API de demonstração, pesquisar por texto, filtrar por categoria e repetir a requisição em caso de falha. |
-| Network | Filtrar sugestões por área, habilidades e localização, adicionar conexões e ver o contador do perfil atualizar. |
+| Fóruns | Carregar os tópicos pela API de demonstração, pesquisar por texto, filtrar por categoria atualizar o feed e repetir a requisição em caso de falha. |
+| Network | Filtrar sugestões por área, habilidades e localização, adicionar conexões, ver o contador atualizar e limpar filtros. |
 | Grupos | Percorrer os próximos encontros na horizontal, conferir data e participantes, entrar em um grupo ou sair dele. |
-| Vagas | Combinar filtros de nível e modalidade e salvar vagas para consultar em uma seção própria. |
+| Vagas | Combinar filtros de nível e modalidade salvar oportunidades em uma seção própria e compartilhar vagas pelo menu do sistema. |
 | Mentoria | Conhecer as especialidades das mentoras, simular uma solicitação e reagendar um encontro com o seletor nativo de data e hora. |
 
 Os perfis, as vagas, os grupos e os encontros são demonstrativos. Conexões, participações e solicitações são interações locais do protótipo. A navegação e os controles são em SwiftUI, com uma barra inferior de seis destinos. A foto é escolhida pelo seletor nativo do sistema.
@@ -23,7 +23,7 @@ Os perfis, as vagas, os grupos e os encontros são demonstrativos. Conexões, pa
 
 - **MVVM** — Os modelos `User`, `ForumTopic`, `Mentorship`, `StudyGroup` e `JobOpening` conformam a `Identifiable` e `Codable`. A `CodeGirlsViewModel` mantém o estado do app, aplica filtros e valida ações. As Views observam o estado e encaminham as interações.
 - **URLSession e async/await** — A ViewModel faz um GET em `/posts` do [JSONPlaceholder](https://jsonplaceholder.typicode.com/), valida a resposta HTTP e usa os IDs decodificados para selecionar tópicos fictícios em português. A tela exibe carregamento, sucesso, resultado vazio e erro com opção de tentar novamente.
-- **AppStorage** — O nome começa como `Raissa`. O nome editado, a miniatura de perfil, o contador, os IDs das conexões e as vagas salvas persistem no dispositivo. Participações em grupos e horários de mentoria vivem na sessão atual do app.
+- **AppStorage** — O nome começa como `Raissa`. O nome editado, a miniatura de perfil, o contador, os IDs das conexões as vagas salvas, as participações em grupos e as datas das mentorias persistem no dispositivo.
 - **Arquivo único** — [CodeGirls.swift](CodeGirls.swift) reúne os modelos, a ViewModel, as Views e o ponto de entrada `@main`. Os comentários em português descrevem as responsabilidades de cada camada.
 
 ## Como executar
@@ -49,6 +49,7 @@ Crie um projeto iOS do tipo **App** com interface SwiftUI no Xcode para macOS, o
 4. Em **Grupos**, participe de um encontro e observe a atualização na contagem.
 5. Em **Vagas**, selecione **Pleno** e **Híbrido**, salve uma vaga e confira **Vagas salvas**.
 6. Em **Mentoria**, solicite um encontro com uma mentora disponível e altere o horário em **Suas mentorias**.
+7. Feche e reabra o app. Confirme a participação em **Grupos** e o horário salvo em **Mentoria**.
 
 ## Capturas de tela
 
