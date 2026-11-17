@@ -80,7 +80,7 @@ private enum ForumState {
     case failure(String)
 }
 
-private struct NetworkFilters {
+private struct NetworkFilters: Equatable {
     var area = ""
     var skills = ""
     var location = ""
@@ -244,8 +244,17 @@ private final class CodeGirlsViewModel: ObservableObject {
         }
     }
 
+    var canClearNetworkFilters: Bool {
+        networkDraft != NetworkFilters() || networkFilters != NetworkFilters()
+    }
+
     func applyNetworkFilters() {
         networkFilters = networkDraft
+    }
+
+    func clearNetworkFilters() {
+        networkDraft = NetworkFilters()
+        networkFilters = NetworkFilters()
     }
 
     func connect(to user: User) {
@@ -691,6 +700,9 @@ private struct NetworkView: View {
                 TextField("Localização", text: $model.networkDraft.location)
                     .textFieldStyle(.roundedBorder)
                 PrimaryAction(title: "Aplicar Filtros") { model.applyNetworkFilters() }
+                if model.canClearNetworkFilters {
+                    Button("Limpar filtros") { model.clearNetworkFilters() }
+                }
             }
 
             SectionTitle(title: "Conheça outras profissionais")
