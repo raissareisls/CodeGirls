@@ -123,6 +123,7 @@ private final class CodeGirlsViewModel: ObservableObject {
     @AppStorage("codegirls.connectedIDs") private var storedConnectedIDs = "1"
     @AppStorage("codegirls.savedJobIDs") private var storedJobIDs = "1"
     @AppStorage("codegirls.joinedGroupIDs") private var storedGroupIDs = ""
+    @AppStorage("codegirls.mentorshipDates") private var storedMentorshipDates = Data()
 
     @Published private(set) var connectedIDs: Set<Int> = []
     @Published private var savedJobIDs: Set<Int> = []
@@ -165,8 +166,11 @@ private final class CodeGirlsViewModel: ObservableObject {
         storedConnectionCount = connectedIDs.count
         savedJobIDs = decodeIDs(storedJobIDs)
         joinedGroupIDs = decodeIDs(storedGroupIDs).intersection(groups.map(\.id))
-        if let first = mentors.first {
+        if let saved = try? JSONDecoder().decode([Int: Date].self, from: storedMentorshipDates) {
+            sessions = saved
+        } else if let first = mentors.first {
             sessions[first.id] = first.date
+            saveMentorshipDates()
         }
     }
 
@@ -284,12 +288,20 @@ private final class CodeGirlsViewModel: ObservableObject {
     func request(_ mentorship: Mentorship) {
         guard !hasSession(mentorship) else { return }
         sessions[mentorship.id] = max(mentorship.date, .now.addingTimeInterval(86_400))
+        saveMentorshipDates()
     }
 
     func reschedule(_ mentorship: Mentorship, to date: Date) -> Bool {
         guard hasSession(mentorship), date > .now else { return false }
         sessions[mentorship.id] = date
+        saveMentorshipDates()
         return true
+    }
+
+    private func saveMentorshipDates() {
+        if let data = try? JSONEncoder().encode(sessions) {
+            storedMentorshipDates = data
+        }
     }
 
     private func decodeIDs(_ value: String) -> Set<Int> {
