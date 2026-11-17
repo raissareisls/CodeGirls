@@ -51,20 +51,20 @@ Crie um projeto iOS do tipo **App** com interface SwiftUI no Xcode para macOS, o
 6. Em **Mentoria**, solicite um encontro com uma mentora disponível e altere o horário em **Suas mentorias**.
 7. Feche e reabra o app. Confirme a participação em **Grupos** e o horário salvo em **Mentoria**.
 
-## Capturas de tela
+## Telas do protótipo
 
-As capturas serão adicionadas após a execução do app no iPad ou no simulador. Salve os PNGs em `docs/screenshots` com os nomes abaixo.
+Estas seis telas fazem parte do protótipo original de baixa fidelidade. A versão SwiftUI usa a paleta violeta descrita no projeto.
 
-| Aba | Arquivo |
-| --- | --- |
-| Início | `home.png` |
-| Fóruns | `forums.png` |
-| Network | `network.png` |
-| Grupos | `groups.png` |
-| Vagas | `jobs.png` |
-| Mentoria | `mentoring.png` |
+| Início | Fóruns | Network |
+| --- | --- | --- |
+| ![Protótipo da tela Início](docs/prototype/home.jpg) | ![Protótipo da tela Fóruns](docs/prototype/forums.jpg) | ![Protótipo da tela Network](docs/prototype/network.jpg) |
 
-<!-- Remova as linhas que delimitam este comentário após adicionar os seis PNGs.
+| Grupos | Vagas | Mentoria |
+| --- | --- | --- |
+| ![Protótipo da tela Grupos](docs/prototype/groups.jpg) | ![Protótipo da tela Vagas](docs/prototype/jobs.jpg) | ![Protótipo da tela Mentoria](docs/prototype/mentoring.jpg) |
+
+<!-- Para publicar as capturas do app em execução, adicione os seis PNGs em
+docs/screenshots e remova as linhas que delimitam este comentário.
 
 | Início | Fóruns | Network |
 | --- | --- | --- |
