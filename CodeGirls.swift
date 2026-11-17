@@ -67,6 +67,10 @@ struct JobOpening: Identifiable, Codable {
     let company: String
     let level: JobLevel
     let mode: WorkMode
+
+    var shareText: String {
+        "\(title) · \(company)\n\(level.rawValue) · \(mode.rawValue)\nVaga demonstrativa do CodeGirls"
+    }
 }
 
 private struct PlaceholderPost: Decodable {
@@ -824,6 +828,9 @@ private struct JobsView: View {
                 model.toggleSaved(job)
             }
             .buttonStyle(.bordered)
+            ShareLink(item: job.shareText) {
+                Label("Compartilhar vaga", systemImage: "square.and.arrow.up")
+            }
         }
     }
 
