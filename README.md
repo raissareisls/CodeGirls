@@ -28,9 +28,13 @@ Os perfis, as vagas, os grupos e os encontros são demonstrativos. Conexões, pa
 
 ## Como executar
 
-O código usa APIs disponíveis a partir do iOS e iPadOS 16. A versão do Swift Playgrounds instalada pode exigir uma versão mais recente do sistema. O feed de Fóruns precisa de internet.
+### Navegador
+
+A [versão web interativa do CodeGirls](https://raissareisls.github.io/CodeGirls/) reúne as seis abas do protótipo. Os Fóruns consultam o JSONPlaceholder. As conexões, vagas salvas, participações e mentorias são demonstrativas, com alterações salvas no próprio navegador.
 
 ### iPad
+
+O código Swift usa APIs disponíveis a partir do iOS e iPadOS 16. A versão instalada do Swift Playgrounds pode exigir uma versão mais recente do sistema. O feed de Fóruns precisa de internet.
 
 1. Abra o [Swift Playgrounds para iPad](https://support.apple.com/en-lamr/guide/playgrounds-ipad/welcome/ipados) e crie um projeto do tipo **App**, com o nome **CodeGirls**.
 2. Abra o arquivo Swift que já contém `@main` e substitua todo o conteúdo pelo de [CodeGirls.swift](CodeGirls.swift).
