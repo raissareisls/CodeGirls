@@ -53,7 +53,18 @@ Crie um projeto iOS do tipo **App** com interface SwiftUI no Xcode para macOS, o
 
 ## Capturas de tela
 
-Crie a pasta `docs/screenshots` no repositório. Capture cada aba com o app em execução e salve os PNGs nos caminhos abaixo para exibi-los no GitHub.
+As capturas serão adicionadas após a execução do app no iPad ou no simulador. Salve os PNGs em `docs/screenshots` com os nomes abaixo.
+
+| Aba | Arquivo |
+| --- | --- |
+| Início | `home.png` |
+| Fóruns | `forums.png` |
+| Network | `network.png` |
+| Grupos | `groups.png` |
+| Vagas | `jobs.png` |
+| Mentoria | `mentoring.png` |
+
+<!-- Remova as linhas que delimitam este comentário após adicionar os seis PNGs.
 
 | Início | Fóruns | Network |
 | --- | --- | --- |
@@ -62,6 +73,7 @@ Crie a pasta `docs/screenshots` no repositório. Capture cada aba com o app em e
 | Grupos | Vagas | Mentoria |
 | --- | --- | --- |
 | ![Tela Grupos](docs/screenshots/groups.png) | ![Tela Vagas](docs/screenshots/jobs.png) | ![Tela Mentoria](docs/screenshots/mentoring.png) |
+-->
 
 ## Autoria
 
