@@ -1,0 +1,91 @@
+name: Capturas do CodeGirls no iOS
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/ios-screenshots.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    if: github.ref == 'refs/heads/main'
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compilar e capturar as seis abas
+        shell: bash
+        run: |
+          set -euo pipefail
+          sim=$(xcrun simctl list devices booted --json | python3 -c 'import json,sys; print(next((d["udid"] for k, ds in json.load(sys.stdin)["devices"].items() if ".iOS-" in k for d in ds if d["name"].startswith("iPhone")), ""))')
+          if [[ -z "$sim" ]]; then
+            sim=$(xcrun simctl list devices available --json | python3 -c 'import json,sys; devices=json.load(sys.stdin)["devices"]; print(next(d["udid"] for key in reversed(list(devices)) if ".iOS-" in key for d in devices[key] if d["name"].startswith("iPhone")))')
+            xcrun simctl boot "$sim"
+          fi
+          xcrun simctl bootstatus "$sim" -b
+          xcrun simctl status_bar "$sim" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState unplugged --batteryLevel 100
+
+          work=$(mktemp -d)
+          app="$work/CodeGirls.app"
+          mkdir -p "$app" docs/screenshots
+          python3 - "$work" <<'PY'
+          from pathlib import Path
+          import plistlib
+          import sys
+
+          work = Path(sys.argv[1])
+          source = Path("CodeGirls.swift").read_text()
+          # A cópia de captura só altera a aba inicial, sem substituir nenhuma View.
+          original = "@State private var selection: AppTab = .home"
+          if source.count(original) != 1:
+              raise SystemExit("Não foi possível identificar a seleção inicial das abas.")
+          capture = """@State private var selection: AppTab = (
+                  ProcessInfo.processInfo.environment["CODEGIRLS_SCREENSHOT_TAB"]
+                      .flatMap { AppTab(rawValue: $0) } ?? .home
+              )"""
+          (work / "CodeGirls.swift").write_text(source.replace(original, capture, 1))
+          with (work / "CodeGirls.app" / "Info.plist").open("wb") as plist:
+              plistlib.dump({
+                  "CFBundleExecutable": "CodeGirls",
+                  "CFBundleDisplayName": "CodeGirls",
+                  "CFBundleIdentifier": "com.raissareisls.codegirls",
+                  "CFBundleName": "CodeGirls",
+                  "CFBundlePackageType": "APPL",
+                  "CFBundleShortVersionString": "1.0",
+                  "CFBundleVersion": "1",
+                  "LSRequiresIPhoneOS": True,
+                  "MinimumOSVersion": "16.0",
+                  "UIDeviceFamily": [1, 2],
+                  "UILaunchScreen": {},
+              }, plist)
+          PY
+          xcrun --sdk iphonesimulator swiftc -parse-as-library \
+            -target "$(uname -m)-apple-ios16.0-simulator" \
+            -sdk "$(xcrun --sdk iphonesimulator --show-sdk-path)" \
+            "$work/CodeGirls.swift" -o "$app/CodeGirls"
+          codesign --force --sign - "$app"
+          xcrun simctl install "$sim" "$app"
+
+          capture() {
+            xcrun simctl terminate "$sim" com.raissareisls.codegirls 2>/dev/null || true
+            SIMCTL_CHILD_CODEGIRLS_SCREENSHOT_TAB="$1" \
+              xcrun simctl launch "$sim" com.raissareisls.codegirls -AppleLanguages '(pt-BR)' -AppleLocale pt_BR
+            sleep "$3"
+            xcrun simctl io "$sim" screenshot "docs/screenshots/$2.png"
+          }
+
+          capture "Início" home 8
+          capture "Fóruns" forums 17
+          capture "Network" network 3
+          capture "Grupos" groups 3
+          capture "Vagas" jobs 3
+          capture "Mentoria" mentoring 3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: codegirls-ios-screenshots
+          path: docs/screenshots/*.png
+          if-no-files-found: error
