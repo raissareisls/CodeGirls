@@ -26,9 +26,6 @@ jobs:
             sim=$(xcrun simctl list devices available --json | python3 -c 'import json,sys; devices=json.load(sys.stdin)["devices"]; print(next(d["udid"] for key in reversed(list(devices)) if ".iOS-" in key for d in devices[key] if d["name"].startswith("iPhone")))')
             xcrun simctl boot "$sim"
           fi
-          xcrun simctl bootstatus "$sim" -b
-          xcrun simctl status_bar "$sim" override --time "9:41" --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState unplugged --batteryLevel 100
-
           work=$(mktemp -d)
           app="$work/CodeGirls.app"
           mkdir -p "$app" docs/screenshots
@@ -68,6 +65,8 @@ jobs:
             -sdk "$(xcrun --sdk iphonesimulator --show-sdk-path)" \
             "$work/CodeGirls.swift" -o "$app/CodeGirls"
           codesign --force --sign - "$app"
+          xcrun simctl bootstatus "$sim" -b
+          xcrun simctl status_bar "$sim" override --time "9:41" || true
           xcrun simctl install "$sim" "$app"
 
           capture() {
