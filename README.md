@@ -51,20 +51,9 @@ Crie um projeto iOS do tipo **App** com interface SwiftUI no Xcode para macOS, o
 6. Em **Mentoria**, solicite um encontro com uma mentora disponível e altere o horário em **Suas mentorias**.
 7. Feche e reabra o app. Confirme a participação em **Grupos** e o horário salvo em **Mentoria**.
 
-## Telas do protótipo
+## Capturas do app em execução
 
-Estas seis telas fazem parte do protótipo original de baixa fidelidade. A versão SwiftUI usa a paleta violeta descrita no projeto.
-
-| Início | Fóruns | Network |
-| --- | --- | --- |
-| ![Protótipo da tela Início](docs/prototype/home.jpg) | ![Protótipo da tela Fóruns](docs/prototype/forums.jpg) | ![Protótipo da tela Network](docs/prototype/network.jpg) |
-
-| Grupos | Vagas | Mentoria |
-| --- | --- | --- |
-| ![Protótipo da tela Grupos](docs/prototype/groups.jpg) | ![Protótipo da tela Vagas](docs/prototype/jobs.jpg) | ![Protótipo da tela Mentoria](docs/prototype/mentoring.jpg) |
-
-<!-- Para publicar as capturas do app em execução, adicione os seis PNGs em
-docs/screenshots e remova as linhas que delimitam este comentário.
+As imagens abaixo foram capturadas em um simulador de iPhone após compilar `CodeGirls.swift` no GitHub Actions. [Ver a execução que gerou as capturas](https://github.com/raissareisls/CodeGirls/actions/runs/43991002924).
 
 | Início | Fóruns | Network |
 | --- | --- | --- |
@@ -73,7 +62,6 @@ docs/screenshots e remova as linhas que delimitam este comentário.
 | Grupos | Vagas | Mentoria |
 | --- | --- | --- |
 | ![Tela Grupos](docs/screenshots/groups.png) | ![Tela Vagas](docs/screenshots/jobs.png) | ![Tela Mentoria](docs/screenshots/mentoring.png) |
--->
 
 ## Autoria
 
